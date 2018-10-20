@@ -3,9 +3,9 @@ import YoutubeApiSearch from "youtube-api-search";
 import _ from "lodash";
 
 import consts from "../constants";
-import SearchBar from "./SearchBar";
-import VideoList from "./VideoList";
-import VideoDetails from "./VideoDetails";
+import SearchBar from "../containers/SearchBar";
+import VideoList from "../containers/VideoList";
+import VideoDetails from "../containers/VideoDetails";
 
 export default class App extends Component {
   state = {
@@ -37,13 +37,21 @@ export default class App extends Component {
 
     return (
       <React.Fragment>
-        <SearchBar
-          searchTerm={searchTerm}
-          onSearchTermChange={this.onSearchTermChange}
-        />
         <div className="row">
-          <VideoDetails video={selectedVideo} />
-          <VideoList videos={videos} onVideoSelect={this.onVideoSelect} />
+          <div className="col-12">
+            <SearchBar
+              searchTerm={searchTerm}
+              onSearchTermChange={this.onSearchTermChange}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-8">
+            <VideoDetails video={selectedVideo} />
+          </div>
+          <div className="col-4">
+            <VideoList videos={videos} onVideoSelect={this.onVideoSelect} />
+          </div>
         </div>
       </React.Fragment>
     );
