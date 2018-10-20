@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import YoutubeApiSearch from "youtube-api-search";
+import _ from "lodash";
 
 import consts from "../constants";
 import SearchBar from "./SearchBar";
@@ -17,14 +18,14 @@ export default class App extends Component {
     this.doSearch();
   }
 
-  doSearch() {
+  doSearch = _.debounce(() => {
     YoutubeApiSearch(
       { key: consts.youtubeApikey, term: this.state.searchTerm },
       videos => this.setState({ videos, selectedVideo: videos[0] })
     );
-  }
+  }, 300);
 
-  onSearchTermChanges = searchTerm => {
+  onSearchTermChange = searchTerm => {
     this.setState({ searchTerm });
     this.doSearch();
   };
@@ -38,7 +39,7 @@ export default class App extends Component {
       <React.Fragment>
         <SearchBar
           searchTerm={searchTerm}
-          onSearchTermChanges={this.onSearchTermChanges}
+          onSearchTermChange={this.onSearchTermChange}
         />
         <div className="row">
           <VideoDetails video={selectedVideo} />
