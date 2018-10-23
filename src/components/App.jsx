@@ -1,13 +1,15 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import YoutubeApiSearch from "youtube-api-search";
 import _ from "lodash";
 
 import consts from "../constants";
+import { requestVideos } from "../actions";
 import SearchBar from "../containers/SearchBar";
 import VideoList from "../containers/VideoList";
 import VideoDetails from "../containers/VideoDetails";
 
-export default class App extends Component {
+class App extends Component {
   state = {
     searchTerm: "surf",
     videos: [],
@@ -23,6 +25,7 @@ export default class App extends Component {
       { key: consts.youtubeApikey, term: this.state.searchTerm },
       videos => this.setState({ videos, selectedVideo: videos[0] })
     );
+    this.props.requestVideos(this.state.searchTerm);
   }, 300);
 
   onSearchTermChange = searchTerm => {
@@ -57,3 +60,12 @@ export default class App extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return { requestVideos: searchTerm => dispatch(requestVideos(searchTerm)) };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
