@@ -1,71 +1,26 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import YoutubeApiSearch from "youtube-api-search";
-import _ from "lodash";
-
-import consts from "../constants";
-import { requestVideos } from "../actions";
 import SearchBar from "../containers/SearchBar";
 import VideoList from "../containers/VideoList";
 import VideoDetails from "../containers/VideoDetails";
 
-class App extends Component {
-  state = {
-    searchTerm: "surf",
-    videos: [],
-    selectedVideo: null
-  };
-
-  componentDidMount() {
-    this.doSearch();
-  }
-
-  doSearch = _.debounce(() => {
-    YoutubeApiSearch(
-      { key: consts.youtubeApikey, term: this.state.searchTerm },
-      videos => this.setState({ videos, selectedVideo: videos[0] })
-    );
-    this.props.requestVideos(this.state.searchTerm);
-  }, 300);
-
-  onSearchTermChange = searchTerm => {
-    this.setState({ searchTerm });
-    this.doSearch();
-  };
-
-  onVideoSelect = selectedVideo => this.setState({ selectedVideo });
-
-  render() {
-    const { searchTerm, videos, selectedVideo } = this.state;
-
-    return (
-      <React.Fragment>
-        <div className="row">
-          <div className="col-12">
-            <SearchBar
-              searchTerm={searchTerm}
-              onSearchTermChange={this.onSearchTermChange}
-            />
-          </div>
+const App = () => {
+  return (
+    <React.Fragment>
+      <div className="row">
+        <div className="col-12">
+          <SearchBar />
         </div>
-        <div className="row">
-          <div className="col-8">
-            <VideoDetails video={selectedVideo} />
-          </div>
-          <div className="col-4">
-            <VideoList videos={videos} onVideoSelect={this.onVideoSelect} />
-          </div>
+      </div>
+      <div className="row">
+        <div className="col-8">
+          <VideoDetails />
         </div>
-      </React.Fragment>
-    );
-  }
-}
+        <div className="col-4">
+          <VideoList />
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
 
-function mapDispatchToProps(dispatch) {
-  return { requestVideos: searchTerm => dispatch(requestVideos(searchTerm)) };
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(App);
+export default App;

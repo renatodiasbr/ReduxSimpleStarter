@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
+import _ from "lodash";
 import consts from "../constants";
 
 const VideoDetail = ({ video }) => {
-  if (!video) return <span>Loading ...</span>;
+  if (_.isNull(video) || _.isEmpty(video)) return <span>Loading ...</span>;
 
   const url = `${consts.youtubeEmbedUrl}/${video.id.videoId}`;
 
@@ -19,4 +21,8 @@ const VideoDetail = ({ video }) => {
   );
 };
 
-export default VideoDetail;
+function mapStateToProps(state) {
+  return { video: state.selectedVideo };
+}
+
+export default connect(mapStateToProps)(VideoDetail);

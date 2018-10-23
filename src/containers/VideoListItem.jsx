@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { selectVideo } from "../actions";
 
 const VideoListItem = ({ video, onVideoSelect }) => {
   const imageUrl = video.snippet.thumbnails.default.url;
@@ -14,4 +16,11 @@ const VideoListItem = ({ video, onVideoSelect }) => {
   );
 };
 
-export default VideoListItem;
+function mapDispatchToProps(dispatch) {
+  return { onVideoSelect: video => dispatch(selectVideo(video)) };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(VideoListItem);

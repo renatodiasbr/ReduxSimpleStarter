@@ -1,18 +1,19 @@
 import React from "react";
+import { connect } from "react-redux";
 import VideoListItem from "./VideoListItem";
 
-const VideoList = ({ videos, onVideoSelect }) => {
+const VideoList = ({ videos }) => {
   return (
     <ul className="list-unstyled">
-      {videos.map(video => (
-        <VideoListItem
-          key={video.etag}
-          video={video}
-          onVideoSelect={onVideoSelect}
-        />
+      {videos.items.map(video => (
+        <VideoListItem key={video.etag} video={video} />
       ))}
     </ul>
   );
 };
 
-export default VideoList;
+function mapStateToProps(state) {
+  return { videos: state.videos };
+}
+
+export default connect(mapStateToProps)(VideoList);
